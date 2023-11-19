@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Map Builder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    #map-container {
+      display: grid;
+      grid-template-columns: repeat(10, 50px);
+      gap: 2px;
+    }
+
+    .tile {
+      width: 50px;
+      height: 50px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      text-align: center;
+      line-height: 50px;
+      cursor: pointer;
+    }
+
+    .tile:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+<div id="map-container"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Define the available tiles
+    var tiles = [
+      'Tile 1', 'Tile 2', 'Tile 3', 'Tile 4', 'Tile 5',
+      'Tile 6', 'Tile 7', 'Tile 8', 'Tile 9', 'Tile 10'
+    ];
+
+    // Create tiles in the sidebar
+    var sidebar = $('#sidebar');
+    tiles.forEach(function (tile) {
+      sidebar.append('<div class="tile" draggable="true">' + tile + '</div>');
+    });
+
+    // Initialize the map container
+    var mapContainer = $('#map-container');
+
+    // Enable drag-and-drop for tiles
+    $('.tile').on('dragstart', function (event) {
+      event.originalEvent.dataTransfer.setData('text/plain', $(this).text());
+    });
+
+    // Enable drop on the map container
+    mapContainer.on('dragover', function (event) {
+      event.preventDefault();
+    });
+
+    mapContainer.on('drop', function (event) {
+      event.preventDefault();
+      var tileText = event.originalEvent.dataTransfer.getData('text/plain');
+      var tile = $('<div class="tile">' + tileText + '</div>');
+      mapContainer.append(tile);
+    });
+  });
+</script>
+
+</body>
+</html>
